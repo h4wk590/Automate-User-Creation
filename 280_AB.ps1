@@ -13,13 +13,18 @@
 
 Function ExcelCSV ($File)
 {
-    
+    # Find the location of the .xlxs file
     $excelFile = "c:\project\" + $File + ".xlsx"
+    # Put Excel Application into object
     $Excel = New-Object -ComObject Excel.Application
+    # Log output
     Write-Output "Opening Excel to view the file."
+    # Make excel silently open
     $Excel.Visible = $false
+    # Don't display alerts from Excel
     $Excel.DisplayAlerts = $false
     $wb = $Excel.Workbooks.Open($excelFile)
+    # For each 
     foreach ($ws in $wb.Worksheets)
     {
         $ws.SaveAs("c:\project" + $File + ".csv", 6)
@@ -28,3 +33,14 @@ Function ExcelCSV ($File)
 }
 $FileName = "Users"
 ExcelCSV -File "$FileName"
+
+
+
+    $groupNames = "Group1", "Group2", "Group3", "Group4", "Group5", "Group6"
+    foreach ($OU in $groupNames)
+    {
+        New-ADOrganizationalUnit -Name $OU -Path "OU=groups,DC=THESHIRE,DC=COM"
+    }
+                     
+ 
+         write-host "Creating OUs for $groupNames"
