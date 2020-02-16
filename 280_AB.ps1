@@ -36,7 +36,7 @@ ExcelCSV -File "$FileName"
 
 
 
-# This function creates 6 groups in the domain 
+# This function creates 6 groups in Active Directory
 Function createGroups
 {
     # Array containing the group names
@@ -55,11 +55,19 @@ Function createGroups
 Function addUsers
 
 {
-    
-    $adUsers = Import-Csv C:\*.csv
-
+    # Import .csv to store in variable
+    $adUsers = Import-Csv -Delimiter "," -Path "C:\*.csv"
+    # set user info from csv
     foreach ($user in $adUsers)
-    {
-
-    }
+{
+    $userFirstname = $user.Firstname
+    $userLastname = $user.Lastname
+    $userfirstInit = $user.Firstname[1]
+    $samAccountName = $userfirstInit + $userLastname 
+      
+    Write-Host Test
+} if ($userLastname = null)
+    
+{
+    
 }
