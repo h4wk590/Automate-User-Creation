@@ -3,7 +3,6 @@ Install-Module ImportExcel
 
 # ITAS 280 Project 2 
 # Aidan Brown
-# 14 Feb 2020
 
 # This script will take columns from Excel file
 # Adds 5 OUs to AD with Users from the Excel file in batches of 50
@@ -42,7 +41,7 @@ $group = "Group$gi"
 
 
     # Creating array with 'New-ADUser' fields
-    # Utilizing variables
+    # Utilizing concatination of variables
     $userParams = @{
         DisplayName =  "$firstName" 
         GivenName = "$firstName"
@@ -60,16 +59,13 @@ New-ADUser @userParams
 
 write-host "Adding $fullName to $group"
 
-# If rows in csv is equal to 50 increment the group and add next set of 50 users.
-
-
 # Setting variables for user share location and drive letter
 $share = "\\SCRIPTDC\share\"
-$homeDir = "\\SCRIPTDC\share\{0} -f $sam"
-$driveLetter = "U:"
+$homeDir = "\\SCRIPTDC\share\{0}" -f $sam
+$driveLetter = "U:\"
 
 # Creating new Directory for users via SamAccountName
-New-Item -Path "$homeDir" -Name $sam -ItemType Directory -Force -ea stop 
+New-Item -Path "$share" -Name $sam -ItemType Directory -Force -ea stop 
 
 # New array for User share and directory details using the Set-ADUser
 $driveParams = @{
@@ -77,20 +73,22 @@ $driveParams = @{
     HomeDirectory = "$homeDir"
     HomeDrive = "$driveLetter"
     }
-# Setting the new user share anf directory
+# Setting the new user share and directory
 Set-ADUser @driveParams
 
-    # Get the share using the SAMAccount
-    $acl = Get-acl "\\SCRIPTDC\share\$sam"
-    # Set access protection on the share
-    $acl.SetAccessProtectionRule($true,$false)
-    # Set file permission for Users
-    $aclUserRule = New-Object System.Security.AccessControl.FileSystemAccessRule("SCRIPTDC\$sam","FullControl","ContainerInherit,ObjectInherit","None","Allow")
-    $acl.SetAccessRule($aclUserRule)
-    $aclAdminRule = New-Object System.Security.AccessControl.FileSystemAccessRule("SCRIPTDC\Domain Admins","FullControl","ContainerInherit,ObjectInherit","None","Allow")
-    $acl.SetAccessRule($aclAdminRule)
-    $acl | Set-Acl "\\SCRIPTDC\share\$sam"
-    
+
+    #$acl = Get-Acl "\\SCRIPTDC\share\$sam"
+
+    #$acl.SetAccessRuleProtection($True,$False)
+    #$UserRule = New-Object System.Security.AccessControl.FileSystemAccessRule("\\SCRIPTDC\Users","FullControl","ContainerInherit,ObjectInherit","None","Allow")
+    #$acl.SetAccessRule($UserRule)
+    #$AdminRule = New-Object System.Security.AccessControl.FileSystemAccessRule("\\SCRIPTDC\Administrators","FullControl","ContainerInherit,ObjectInherit","None","Allow")
+    #$acl.SetAccessRule($AdminRule)
+    #$acl | Set-Acl "\\SCRIPTDC\share\$sam"
+
+    #Write-Host $acl
+
+# If rows in csv is equal to 50 increment the group and add next set of 50 users.    
     $i++ 
 if($i -eq 50) {
     $i=0

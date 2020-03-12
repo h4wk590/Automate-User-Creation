@@ -9,4 +9,4 @@
         New-ADOrganizationalUnit -Name $OU -Path "OU=project,DC=THESHIRE,DC=COM"
     }
                      
-        write-host "Creating OUs for $groupNames"
+        write-host "Creating OUs: $groupNames"
