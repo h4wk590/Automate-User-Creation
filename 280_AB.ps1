@@ -3,7 +3,6 @@ Install-Module ImportExcel
 
 # ITAS 280 Project 2 
 # Aidan Brown
-
 # This script will take columns from Excel file
 # Adds 5 OUs to AD with Users from the Excel file in batches of 50
 # Each User will get a U: home drive
