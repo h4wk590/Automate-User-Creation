@@ -15,7 +15,6 @@ $g4 = "OU=project,OU=Group4,DC=THESHIRE,DC=com"
 $g5 = "OU=project,OU=Group5,DC=THESHIRE,DC=com"
 $g6 = "OU=project,OU=Group1,DC=THESHIRE,DC=com"
 
-
 if ([string]::IsNullorEmpty($lastName)) {
 
 Write-Host "user has no lastname! `n"
